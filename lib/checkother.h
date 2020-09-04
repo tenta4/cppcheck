@@ -103,6 +103,7 @@ public:
         checkOther.checkAccessOfMovedVariable();
         checkOther.checkModuloOfOne();
         checkOther.checkMissingElse();
+        checkOther.checkMissingDefault();
     }
 
     /** @brief Clarify calculation for ".. a * b ? .." */
@@ -222,6 +223,7 @@ public:
 
     /** @brief %Check for 'if' without a corresponding 'else' */
     void checkMissingElse();
+    void checkMissingDefault();
 
 private:
     // Error messages..

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 //---------------------------------------------------------------------------
 #include "checkother.h"
 
@@ -874,6 +873,28 @@ void CheckOther::checkMissingElse()
             const Token *tok2 = tok->next()->link()->next()->link()->next();
             if (!Token::Match(tok2, "else")) {
                 reportError(tok, Severity::style, "missingElse", "missing else");
+            }
+        }
+    }
+}
+
+void CheckOther::checkMissingDefault()
+{
+    for (const Token *tok = mTokenizer->tokens(); tok != NULL; tok = tok->next()) {
+        if (Token::Match(tok, "switch")) {
+
+            bool found = false;
+            auto endofswitch = tok->next()->link()->next()->link();
+            for (auto tok3 = tok->next()->link();  tok3 != endofswitch; tok3 = tok3->next())
+            {
+                if (Token::Match(tok3, "default"))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                reportError(tok, Severity::style, "missingDefault", "missing default");
             }
         }
     }
