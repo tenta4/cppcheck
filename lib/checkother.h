@@ -102,6 +102,7 @@ public:
         checkOther.checkMisusedScopedObject();
         checkOther.checkAccessOfMovedVariable();
         checkOther.checkModuloOfOne();
+        checkOther.checkMissingElse();
     }
 
     /** @brief Clarify calculation for ".. a * b ? .." */
@@ -218,6 +219,9 @@ public:
     void checkComparePointers();
 
     void checkModuloOfOne();
+
+    /** @brief %Check for 'if' without a corresponding 'else' */
+    void checkMissingElse();
 
 private:
     // Error messages..

@@ -247,6 +247,8 @@ private:
         TEST_CASE(moduloOfOne);
 
         TEST_CASE(sameExpressionPointers);
+
+        TEST_CASE(missingElse);
     }
 
     void check(const char code[], const char *filename = nullptr, bool experimental = false, bool inconclusive = true, bool runSimpleChecks=true, bool verbose=false, Settings* settings = nullptr) {
@@ -3780,6 +3782,35 @@ private:
               "}");
         ASSERT_EQUALS("", errout.str());
     }
+
+
+    void missingElse() {
+        check("int foo() {\n"
+              "    if (cond) {\n"
+              "    }\n"
+              "}\n");
+        ASSERT_EQUALS("[test.cpp:2]: (style) missing else\n", errout.str());
+
+        check("int foo() {\n"
+              "    if (cond) bar();\n"
+              "}\n");
+        ASSERT_EQUALS("[test.cpp:2]: (style) missing else\n", errout.str());
+
+        check("int foo() {\n"
+              "    if (cond) {\n"
+              "        bar();\n"
+              "    } else {\n"
+              "    }\n"
+              "}\n");
+        ASSERT_EQUALS("", errout.str());
+
+        check("int foo() {\n"
+              "    if (cond) bar();\n"
+              "    else baz();\n"
+              "}\n");
+        ASSERT_EQUALS("", errout.str());
+    }
+
 
     void selfAssignment() {
         check("void foo()\n"

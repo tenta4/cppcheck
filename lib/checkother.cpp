@@ -866,6 +866,19 @@ void CheckOther::unreachableCodeError(const Token *tok, bool inconclusive)
                 "Statements following return, break, continue, goto or throw will never be executed.", CWE561, inconclusive);
 }
 
+void CheckOther::checkMissingElse()
+{
+    for (const Token *tok = mTokenizer->tokens(); tok != NULL; tok = tok->next()) {
+        if (Token::Match(tok, "if")) {
+            // bounce through the tokens "if ( ) { } else?"
+            const Token *tok2 = tok->next()->link()->next()->link()->next();
+            if (!Token::Match(tok2, "else")) {
+                reportError(tok, Severity::style, "missingElse", "missing else");
+            }
+        }
+    }
+}
+
 //---------------------------------------------------------------------------
 // Check scope of variables..
 //---------------------------------------------------------------------------
