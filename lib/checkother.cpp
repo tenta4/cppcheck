@@ -870,8 +870,13 @@ void CheckOther::checkMissingElse()
     for (const Token *tok = mTokenizer->tokens(); tok != NULL; tok = tok->next()) {
         if (Token::Match(tok, "if")) {
             // bounce through the tokens "if ( ) { } else?"
-            const Token *tok2 = tok->next()->link()->next()->link()->next();
-            if (!Token::Match(tok2, "else")) {
+            const Token *tok2 = tok->next()->link();
+            if (!tok2) continue;
+            tok2 = tok2->next()->link();
+            if (!tok2) continue;
+
+            tok2 = tok2->next();
+            if (tok2 && !Token::Match(tok2, "else")) {
                 reportError(tok, Severity::style, "missingElse", "missing else");
             }
         }

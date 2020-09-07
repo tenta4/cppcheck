@@ -527,7 +527,9 @@ private:
               "       double fStepMain = 1;\n"
               "       sal_Int32 nIntervalCount = static_cast< sal_Int32 >(fStepMain / fStepHelp);\n"
               "    }\n"
+              "    else {}\n"
               "  }\n"
+              "  else {}\n"
               "}");
         ASSERT_EQUALS("", errout.str());
     }
